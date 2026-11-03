@@ -55,11 +55,40 @@
         .btn-secondary { background: #0d6efd; color: white; }
         .btn-light { background: white; border: 1px solid #bbb; }
 
+        /* =========================
+           80:20 FIXED BILL LAYOUT
+           ========================= */
         .bill {
             background: white;
-            padding: 28px;
+            padding: 24px;
             box-shadow: 0 2px 12px rgba(0,0,0,.12);
             border: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            min-height: 1120px; /* Fixed A4-like proportion on screen */
+        }
+
+        .bill-upper {
+            flex: 0 0 80%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .table-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid #222;
+        }
+
+        .bill-lower {
+            flex: 0 0 20%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-top: 2px dotted #222;
+            margin-top: 12px;
+            padding-top: 12px;
         }
 
         /* =========================
@@ -69,8 +98,8 @@
             position: relative;
             text-align: center;
             border-bottom: 2px solid #111;
-            padding: 4px 160px 16px 160px;
-            margin-bottom: 18px;
+            padding: 4px 160px 14px 160px;
+            margin-bottom: 14px;
         }
 
         .brand-name {
@@ -87,7 +116,7 @@
         }
 
         .business-type {
-            margin: 10px auto 7px;
+            margin: 8px auto 6px;
             max-width: 680px;
             font-size: 19px;
             font-weight: 700;
@@ -115,13 +144,13 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .customer-box {
             border: 2px solid #222;
-            padding: 14px;
-            margin-bottom: 20px;
+            padding: 12px;
+            margin-bottom: 14px;
         }
 
         .customer-grid {
@@ -131,59 +160,111 @@
         }
 
         .customer-address-row {
-            margin-top: 12px;
+            margin-top: 10px;
         }
 
         label {
             display: block;
             font-size: 15px;
             font-weight: 800;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         input {
             width: 100%;
-            padding: 10px;
+            padding: 9px 10px;
             border: 1px solid #888;
             border-radius: 4px;
             font-size: 18px;
             font-weight: 600;
         }
 
+        /* =========================
+           STRETCHING ITEMS TABLE
+           ========================= */
         .bill-table {
             width: 100%;
             border-collapse: collapse;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bill-table thead,
+        .bill-table tfoot {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        .bill-table tbody {
+            flex: 1;
+            display: block;
+            width: 100%;
+            background: linear-gradient(
+                to right,
+                transparent 0%,
+                transparent 44%,
+                #222 44%,
+                #222 calc(44% + 1px),
+                transparent calc(44% + 1px),
+                transparent 52%,
+                #222 52%,
+                #222 calc(52% + 1px),
+                transparent calc(52% + 1px),
+                transparent 68%,
+                #222 68%,
+                #222 calc(68% + 1px),
+                transparent calc(68% + 1px),
+                transparent 84%,
+                #222 84%,
+                #222 calc(84% + 1px),
+                transparent calc(84% + 1px),
+                transparent 100%
+            );
+        }
+
+        .bill-table tbody tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+            border-bottom: 1px solid #ccc;
         }
 
         .bill-table th,
         .bill-table td {
-            border: 1px solid #222;
-            padding: 10px 8px;
+            border-right: 1px solid #222;
+            padding: 8px;
         }
 
-        .bill-table th {
+        .bill-table th:last-child,
+        .bill-table td:last-child {
+            border-right: 0;
+        }
+
+        .bill-table thead th {
             background: #eee;
             text-align: center;
             font-size: 18px;
             font-weight: 800;
+            border-bottom: 2px solid #222;
         }
 
-        .bill-table .description {
-            width: 44%;
+        .bill-table tfoot tr {
+            border-top: 2px solid #222;
+            background: #fafafa;
         }
 
+        .bill-table .description { width: 44%; }
         .bill-table .serial {
             width: 8%;
             text-align: center;
             font-size: 18px;
             font-weight: 700;
         }
-
         .bill-table .qty,
         .bill-table .rate-column,
-        .bill-table .amount {
-            width: 16%;
-        }
+        .bill-table .amount { width: 16%; }
 
         .bill-table input {
             border: 0;
@@ -219,6 +300,7 @@
             white-space: nowrap;
             font-size: 19px;
             font-weight: 700;
+            position: relative;
         }
 
         .qty-total-cell {
@@ -228,56 +310,50 @@
             font-weight: 900;
         }
 
-        .delete-cell {
-            width: 40px;
-            border-left: 0 !important;
-            border-right: 0 !important;
-        }
-
         .delete-row {
             background: transparent;
             color: #dc3545;
-            font-size: 22px;
-            padding: 2px 6px;
+            font-size: 20px;
+            padding: 0 4px;
+            margin-left: 6px;
         }
 
         .total-row td {
             font-weight: 900;
             font-size: 22px;
-            padding: 14px 8px;
-            background: #fafafa;
+            padding: 12px 8px;
         }
 
         .total-label {
             text-align: right;
         }
 
+        .bottom-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
         .return-policy {
-            margin-top: 14px;
             text-align: left;
             font-size: 18px;
             font-weight: 800;
         }
 
         /* =========================
-           CUSTOMER RECEIPT / TEAR-OFF
+           20% LOWER CUSTOMER RECEIPT
            ========================= */
-        .receipt-divider {
-            margin-top: 20px;
-            border-top: 2px dotted #333;
-            height: 0;
-        }
-
-        .receipt {
-            padding-top: 12px;
-            min-height: 20%;
-        }
-
         .receipt-grid {
-            margin-top: 0;
             display: grid;
             grid-template-columns: 1fr;
-            gap: 10px;
+            gap: 12px;
+        }
+
+        .receipt-row-split {
+            display: grid;
+            grid-template-columns: 62% 35%;
+            justify-content: space-between;
         }
 
         .receipt-field {
@@ -285,10 +361,8 @@
             align-items: baseline;
             justify-content: flex-start;
             gap: 8px;
-            border: 0;
-            padding: 0;
-            font-size: 19px;
-            min-height: 24px;
+            font-size: 20px;
+            min-height: 26px;
         }
 
         .receipt-field .label {
@@ -298,17 +372,11 @@
 
         .receipt-field .value {
             text-align: left;
-            font-weight: 700;
+            font-weight: 800;
             flex: 1;
             min-height: 22px;
-            border-bottom: 1px dotted #777;
+            border-bottom: 1.5px dotted #555;
             padding-bottom: 2px;
-        }
-
-        .receipt-row-split {
-            display: grid;
-            grid-template-columns: 1fr 260px;
-            gap: 20px;
         }
 
         .message {
@@ -325,46 +393,26 @@
 
         @media (max-width: 700px) {
             body { padding: 8px; font-size: 16px; }
-
-            .bill { padding: 12px; }
-
-            .shop-header {
-                padding: 4px 0 15px;
-            }
-
+            .bill { padding: 12px; min-height: auto; }
+            .shop-header { padding: 4px 0 15px; }
             .seller-contact {
                 position: static;
                 width: auto;
                 text-align: center;
                 margin-top: 8px;
             }
-
             .brand-name { font-size: 30px; }
-
             .bill-info,
             .customer-grid,
-            .receipt-grid,
             .receipt-row-split {
                 grid-template-columns: 1fr;
                 gap: 8px;
             }
-
-            .bill-table {
-                font-size: 14px;
-            }
-
-            .bill-table th,
-            .bill-table td {
-                padding: 6px 4px;
-            }
-
-            .bill-table .description { width: 38%; }
-            .bill-table .serial { width: 9%; }
-            .bill-table .qty,
-            .bill-table .rate-column,
-            .bill-table .amount { width: 17%; }
         }
 
+        /* =========================
+           A4 PRINT (FIXED 80:20)
+           ========================= */
         @page {
             size: A4 portrait;
             margin: 5mm;
@@ -373,10 +421,7 @@
         @media print {
             html, body {
                 width: 210mm;
-                height: 297mm;
-            }
-
-            body {
+                height: 287mm;
                 padding: 0;
                 margin: 0;
                 background: white;
@@ -392,43 +437,50 @@
             .app {
                 max-width: none;
                 width: 100%;
+                height: 287mm;
             }
 
             .bill {
-                position: relative;
                 width: 100%;
+                height: 287mm;
                 min-height: 287mm;
+                max-height: 287mm;
                 box-shadow: none;
                 border: 0;
-                padding: 3mm;
+                padding: 2mm;
                 margin: 0;
+                display: flex;
+                flex-direction: column;
                 overflow: hidden;
             }
 
+            .bill-upper {
+                flex: 0 0 80%;
+                max-height: 80%;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .bill-lower {
+                flex: 0 0 20%;
+                max-height: 20%;
+                margin-top: 2mm;
+                padding-top: 3mm;
+                border-top: 2px dotted #111;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
             .shop-header {
-                padding: 2px 125px 8px 125px;
-                margin-bottom: 6px;
+                padding: 2px 125px 6px 125px;
+                margin-bottom: 5px;
             }
 
-            .brand-name {
-                font-size: 34px;
-            }
-
-            .proprietor {
-                margin-top: 2px;
-                font-size: 14px;
-            }
-
-            .business-type {
-                margin: 3px auto 2px;
-                font-size: 13px;
-                line-height: 1.2;
-            }
-
-            .shop-address {
-                font-size: 13px;
-            }
-
+            .brand-name { font-size: 34px; }
+            .proprietor { margin-top: 2px; font-size: 14px; }
+            .business-type { margin: 2px auto; font-size: 13px; line-height: 1.2; }
+            .shop-address { font-size: 13px; }
             .seller-contact {
                 top: 0;
                 right: 0;
@@ -437,120 +489,30 @@
                 line-height: 1.2;
             }
 
-            .bill-info {
-                gap: 6px;
-                margin-bottom: 6px;
-            }
+            .bill-info { gap: 6px; margin-bottom: 5px; }
+            label { font-size: 12.5px; margin-bottom: 2px; }
+            input { padding: 3px 6px; font-size: 15px; font-weight: 700; }
 
-            label {
-                font-size: 13px;
-                margin-bottom: 2px;
-            }
+            .customer-box { padding: 5px; margin-bottom: 6px; }
+            .customer-grid { gap: 6px; }
+            .customer-address-row { margin-top: 4px; }
 
-            input {
-                padding: 4px 6px;
-                font-size: 15px;
-                font-weight: 700;
-            }
-
-            .customer-box {
-                padding: 6px;
-                margin-bottom: 6px;
-            }
-
-            .customer-grid {
-                gap: 6px;
-            }
-
-            .customer-address-row {
-                margin-top: 6px;
-            }
-
-            .bill-table {
-                font-size: 15px;
-            }
-
-            .bill-table th {
-                font-size: 15px;
-                padding: 4px;
-            }
-
-            .bill-table td {
-                padding: 2px 4px;
-                height: 8mm;
-            }
-
-            .bill-table .serial {
-                font-size: 15px;
-            }
-
-            .bill-table input {
-                padding: 2px 4px;
-                font-size: 15px;
-                height: 20px;
-            }
-
-            .bill-table .description {
-                width: 47%;
-            }
-
-            .bill-table .serial {
-                width: 7%;
-            }
-
-            .bill-table .qty,
-            .bill-table .rate-column,
-            .bill-table .amount {
-                width: 14%;
-            }
-
-            .bill-table td.amount-cell {
-                font-size: 16px;
-            }
+            .bill-table th { font-size: 15px; padding: 4px; }
+            .bill-table td { padding: 2px 4px; }
+            .bill-table .serial { font-size: 15px; }
+            .bill-table input { padding: 2px 4px; font-size: 15px; height: 20px; }
+            .bill-table td.amount-cell { font-size: 16px; }
 
             .total-row td,
             .qty-total-cell {
-                font-size: 17px !important;
-                padding: 5px 4px;
-                height: 9mm;
+                font-size: 18px !important;
+                padding: 6px 4px;
             }
 
-            .return-policy {
-                margin-top: 6px;
-                font-size: 14px;
-            }
+            .return-policy { font-size: 14px; }
 
-            .receipt-divider {
-                position: absolute;
-                left: 3mm;
-                right: 3mm;
-                bottom: 38mm;
-                margin: 0;
-            }
-
-            .receipt {
-                position: absolute;
-                left: 3mm;
-                right: 3mm;
-                bottom: 4mm;
-                padding-top: 6px;
-                min-height: 30mm;
-                margin: 0;
-            }
-
-            .receipt-grid {
-                gap: 4px;
-            }
-
-            .receipt-field {
-                font-size: 15px;
-                min-height: 20px;
-            }
-
-            .receipt-row-split {
-                grid-template-columns: 1fr 210px;
-                gap: 14px;
-            }
+            .receipt-grid { gap: 8px; }
+            .receipt-field { font-size: 16px; min-height: 22px; }
         }
     </style>
 </head>
@@ -572,89 +534,92 @@
 
     <div class="bill" id="printArea">
 
-        <div class="shop-header">
-            <div class="seller-contact">
-                <div>9903479108</div>
-                <div>8240544458</div>
-            </div>
-
-            <div class="brand-name">S.I. GARMENTS</div>
-            <div class="proprietor">Prop: Ajay Singh (Laltu)</div>
-            <div class="business-type">
-                Wholeseller of Fancy Kurty, Legince &amp; Readymade Garments
-            </div>
-            <div class="shop-address">
-                S/73/1B, Marry Road, Kolkata-700018
-            </div>
-        </div>
-
-        <div class="bill-info">
-            <div>
-                <label>Bill No.</label>
-                <input id="billNo" placeholder="Enter bill number">
-            </div>
-
-            <div>
-                <label>Date</label>
-                <input id="billDate" type="date" value="{{ today }}">
-            </div>
-        </div>
-
-        <div class="customer-box">
-            <div class="customer-grid">
-                <div>
-                    <label>Customer Name</label>
-                    <input id="customerName" placeholder="Customer name">
+        <!-- TOP 80% SECTION -->
+        <div class="bill-upper">
+            <div class="shop-header">
+                <div class="seller-contact">
+                    <div>9903479108</div>
+                    <div>8240544458</div>
                 </div>
 
-                <div>
-                    <label>Customer Phone Number</label>
-                    <input id="customerPhone" type="tel" placeholder="Phone number">
+                <div class="brand-name">S.I. GARMENTS</div>
+                <div class="proprietor">Prop: Ajay Singh (Laltu)</div>
+                <div class="business-type">
+                    Wholeseller of Fancy Kurty, Legince &amp; Readymade Garments
+                </div>
+                <div class="shop-address">
+                    S/73/1B, Marry Road, Kolkata-700018
                 </div>
             </div>
 
-            <div class="customer-address-row">
-                <label>Customer Address (Optional)</label>
-                <input id="customerAddress" placeholder="Enter customer address">
+            <div class="bill-info">
+                <div>
+                    <label>Bill No.</label>
+                    <input id="billNo" placeholder="Enter bill number">
+                </div>
+
+                <div>
+                    <label>Date</label>
+                    <input id="billDate" type="date" value="{{ today }}">
+                </div>
+            </div>
+
+            <div class="customer-box">
+                <div class="customer-grid">
+                    <div>
+                        <label>Customer Name</label>
+                        <input id="customerName" placeholder="Customer name">
+                    </div>
+
+                    <div>
+                        <label>Customer Phone Number</label>
+                        <input id="customerPhone" type="tel" placeholder="Phone number">
+                    </div>
+                </div>
+
+                <div class="customer-address-row">
+                    <label>Customer Address (Optional)</label>
+                    <input id="customerAddress" placeholder="Enter customer address">
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="bill-table">
+                    <thead>
+                        <tr>
+                            <th class="description">Description</th>
+                            <th class="serial">S.No</th>
+                            <th class="qty">Quantity</th>
+                            <th class="rate-column">Rate</th>
+                            <th class="amount">Amount</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="itemsBody"></tbody>
+
+                    <tfoot>
+                        <tr class="total-row">
+                            <td colspan="2" class="total-label">TOTAL QTY</td>
+                            <td id="totalQty" class="qty-total-cell">0</td>
+                            <td class="total-label">GRAND TOTAL</td>
+                            <td id="grandTotal" class="amount-cell">₹0.00</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="bottom-bar">
+                <div class="return-policy">
+                    Goods once sold cannot be taken back
+                </div>
+                <div class="screen-only">
+                    <button class="btn-secondary" onclick="addRow()">+ Add Item</button>
+                </div>
             </div>
         </div>
 
-        <table class="bill-table">
-            <thead>
-                <tr>
-                    <th class="description">Description</th>
-                    <th class="serial">S.No</th>
-                    <th class="qty">Quantity</th>
-                    <th class="rate-column">Rate</th>
-                    <th class="amount">Amount</th>
-                    <th class="delete-cell screen-only"></th>
-                </tr>
-            </thead>
-
-            <tbody id="itemsBody"></tbody>
-
-            <tfoot>
-                <tr class="total-row">
-                    <td colspan="2" class="total-label">TOTAL QTY</td>
-                    <td id="totalQty" class="qty-total-cell">0</td>
-                    <td class="total-label">GRAND TOTAL</td>
-                    <td id="grandTotal" class="amount-cell">₹0.00</td>
-                    <td class="delete-cell screen-only"></td>
-                </tr>
-            </tfoot>
-        </table>
-
-        <div class="screen-only" style="margin-top:12px;">
-            <button class="btn-secondary" onclick="addRow()">+ Add Item</button>
-        </div>
-
-        <div class="return-policy">
-            Goods once sold cannot be taken back
-        </div>
-
-        <div class="receipt-divider"></div>
-
-        <div class="receipt">
+        <!-- BOTTOM 20% SECTION -->
+        <div class="bill-lower">
             <div class="receipt-grid">
                 <div class="receipt-row-split">
                     <div class="receipt-field">
@@ -750,37 +715,33 @@
         const row = document.createElement("tr");
 
         row.innerHTML = `
-            <td>
+            <td class="description">
                 <input class="description-input"
                        value="${escapeHtml(description)}">
             </td>
 
             <td class="serial"></td>
 
-            <td>
+            <td class="qty">
                 <input class="quantity number-input"
                        type="number"
                        min="0"
                        step="any"
-                       value="${quantity}"
-                       placeholder="">
+                       value="${quantity}">
             </td>
 
-            <td>
+            <td class="rate-column">
                 <input class="rate-input number-input"
                        type="number"
                        min="0"
                        step="any"
                        value="${rate}"
-                       placeholder=""
                        inputmode="decimal">
             </td>
 
-            <td class="amount-cell">₹0.00</td>
-
-            <td class="delete-cell screen-only">
-                <button class="delete-row"
-                        onclick="deleteRow(this)">×</button>
+            <td class="amount amount-cell">
+                <span class="row-amount">₹0.00</span>
+                <button class="delete-row screen-only" onclick="deleteRow(this)" title="Delete row">×</button>
             </td>
         `;
 
@@ -841,7 +802,7 @@
             const hasInput = row.querySelector(".quantity").value.trim() !== ""
                 || row.querySelector(".rate-input").value.trim() !== "";
 
-            row.querySelector(".amount-cell").textContent =
+            row.querySelector(".row-amount").textContent =
                 displayAmount(amount, hasInput);
 
             total += amount;
@@ -860,7 +821,7 @@
 
         document.getElementById("grandTotal").textContent =
             total === 0 && allEmpty
-                ? ""
+                ? "₹0.00"
                 : money(total);
 
         syncReceipt();
