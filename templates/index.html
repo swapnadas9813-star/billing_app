@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S.I. Garments Billing</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f1f3f5;
+            color: #111;
+            font-size: 18px;
+        }
+
+        .app {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: 0;
+            padding: 12px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .btn-primary { background: #198754; color: white; }
+        .btn-secondary { background: #0d6efd; color: white; }
+        .btn-light { background: white; border: 1px solid #bbb; }
+
+        .bill {
+            background: white;
+            padding: 28px;
+            box-shadow: 0 2px 12px rgba(0,0,0,.12);
+            border: 1px solid #ddd;
+        }
+
+        /* =========================
+           S.I. GARMENTS HEADER
+           ========================= */
+        .shop-header {
+            position: relative;
+            text-align: center;
+            border-bottom: 2px solid #111;
+            padding: 4px 160px 16px 160px;
+            margin-bottom: 18px;
+        }
+
+        .brand-name {
+            font-size: 42px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .proprietor {
+            margin-top: 4px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .business-type {
+            margin: 10px auto 7px;
+            max-width: 680px;
+            font-size: 19px;
+            font-weight: 700;
+            line-height: 1.35;
+        }
+
+        .shop-address {
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        .seller-contact {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 145px;
+            text-align: right;
+            font-size: 18px;
+            font-weight: 800;
+            line-height: 1.3;
+            white-space: nowrap;
+        }
+
+        .bill-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .customer-box {
+            border: 2px solid #222;
+            padding: 14px;
+            margin-bottom: 20px;
+        }
+
+        .customer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .customer-address-row {
+            margin-top: 12px;
+        }
+
+        label {
+            display: block;
+            font-size: 15px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #888;
+            border-radius: 4px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .bill-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .bill-table th,
+        .bill-table td {
+            border: 1px solid #222;
+            padding: 10px 8px;
+        }
+
+        .bill-table th {
+            background: #eee;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .bill-table .description {
+            width: 44%;
+        }
+
+        .bill-table .serial {
+            width: 8%;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .bill-table .qty,
+        .bill-table .rate-column,
+        .bill-table .amount {
+            width: 16%;
+        }
+
+        .bill-table input {
+            border: 0;
+            padding: 6px 4px;
+            border-radius: 0;
+            background: transparent;
+            font-size: 19px;
+            font-weight: 600;
+        }
+
+        .bill-table input:focus {
+            outline: 2px solid #0d6efd;
+            outline-offset: -2px;
+            background: #fff;
+        }
+
+        .rate-input,
+        .quantity {
+            width: 100% !important;
+            font-weight: 700;
+        }
+
+        #billNo {
+            font-weight: 700;
+        }
+
+        .number-input {
+            text-align: right;
+        }
+
+        .amount-cell {
+            text-align: right;
+            white-space: nowrap;
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        .qty-total-cell {
+            text-align: right;
+            white-space: nowrap;
+            font-size: 22px;
+            font-weight: 900;
+        }
+
+        .delete-cell {
+            width: 40px;
+            border-left: 0 !important;
+            border-right: 0 !important;
+        }
+
+        .delete-row {
+            background: transparent;
+            color: #dc3545;
+            font-size: 22px;
+            padding: 2px 6px;
+        }
+
+        .total-row td {
+            font-weight: 900;
+            font-size: 22px;
+            padding: 14px 8px;
+            background: #fafafa;
+        }
+
+        .total-label {
+            text-align: right;
+        }
+
+        .return-policy {
+            margin-top: 14px;
+            text-align: left;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        /* =========================
+           CUSTOMER RECEIPT / TEAR-OFF
+           ========================= */
+        .receipt-divider {
+            margin-top: 20px;
+            border-top: 2px dotted #333;
+            height: 0;
+        }
+
+        .receipt {
+            padding-top: 12px;
+            min-height: 20%;
+        }
+
+        .receipt-grid {
+            margin-top: 0;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .receipt-field {
+            display: flex;
+            align-items: baseline;
+            justify-content: flex-start;
+            gap: 8px;
+            border: 0;
+            padding: 0;
+            font-size: 19px;
+            min-height: 24px;
+        }
+
+        .receipt-field .label {
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .receipt-field .value {
+            text-align: left;
+            font-weight: 700;
+            flex: 1;
+            min-height: 22px;
+            border-bottom: 1px dotted #777;
+            padding-bottom: 2px;
+        }
+
+        .receipt-row-split {
+            display: grid;
+            grid-template-columns: 1fr 260px;
+            gap: 20px;
+        }
+
+        .message {
+            margin: 10px 0;
+            padding: 12px;
+            display: none;
+            border-radius: 5px;
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .success { background: #d1e7dd; color: #0f5132; }
+        .error { background: #f8d7da; color: #842029; }
+
+        @media (max-width: 700px) {
+            body { padding: 8px; font-size: 16px; }
+
+            .bill { padding: 12px; }
+
+            .shop-header {
+                padding: 4px 0 15px;
+            }
+
+            .seller-contact {
+                position: static;
+                width: auto;
+                text-align: center;
+                margin-top: 8px;
+            }
+
+            .brand-name { font-size: 30px; }
+
+            .bill-info,
+            .customer-grid,
+            .receipt-grid,
+            .receipt-row-split {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .bill-table {
+                font-size: 14px;
+            }
+
+            .bill-table th,
+            .bill-table td {
+                padding: 6px 4px;
+            }
+
+            .bill-table .description { width: 38%; }
+            .bill-table .serial { width: 9%; }
+            .bill-table .qty,
+            .bill-table .rate-column,
+            .bill-table .amount { width: 17%; }
+        }
+
+        @page {
+            size: A4 portrait;
+            margin: 5mm;
+        }
+
+        @media print {
+            html, body {
+                width: 210mm;
+                height: 297mm;
+            }
+
+            body {
+                padding: 0;
+                margin: 0;
+                background: white;
+                font-size: 14px;
+            }
+
+            .toolbar,
+            .screen-only,
+            #message {
+                display: none !important;
+            }
+
+            .app {
+                max-width: none;
+                width: 100%;
+            }
+
+            .bill {
+                position: relative;
+                width: 100%;
+                min-height: 287mm;
+                box-shadow: none;
+                border: 0;
+                padding: 3mm;
+                margin: 0;
+                overflow: hidden;
+            }
+
+            .shop-header {
+                padding: 2px 125px 8px 125px;
+                margin-bottom: 6px;
+            }
+
+            .brand-name {
+                font-size: 34px;
+            }
+
+            .proprietor {
+                margin-top: 2px;
+                font-size: 14px;
+            }
+
+            .business-type {
+                margin: 3px auto 2px;
+                font-size: 13px;
+                line-height: 1.2;
+            }
+
+            .shop-address {
+                font-size: 13px;
+            }
+
+            .seller-contact {
+                top: 0;
+                right: 0;
+                width: 120px;
+                font-size: 14px;
+                line-height: 1.2;
+            }
+
+            .bill-info {
+                gap: 6px;
+                margin-bottom: 6px;
+            }
+
+            label {
+                font-size: 13px;
+                margin-bottom: 2px;
+            }
+
+            input {
+                padding: 4px 6px;
+                font-size: 15px;
+                font-weight: 700;
+            }
+
+            .customer-box {
+                padding: 6px;
+                margin-bottom: 6px;
+            }
+
+            .customer-grid {
+                gap: 6px;
+            }
+
+            .customer-address-row {
+                margin-top: 6px;
+            }
+
+            .bill-table {
+                font-size: 15px;
+            }
+
+            .bill-table th {
+                font-size: 15px;
+                padding: 4px;
+            }
+
+            .bill-table td {
+                padding: 2px 4px;
+                height: 8mm;
+            }
+
+            .bill-table .serial {
+                font-size: 15px;
+            }
+
+            .bill-table input {
+                padding: 2px 4px;
+                font-size: 15px;
+                height: 20px;
+            }
+
+            .bill-table .description {
+                width: 47%;
+            }
+
+            .bill-table .serial {
+                width: 7%;
+            }
+
+            .bill-table .qty,
+            .bill-table .rate-column,
+            .bill-table .amount {
+                width: 14%;
+            }
+
+            .bill-table td.amount-cell {
+                font-size: 16px;
+            }
+
+            .total-row td,
+            .qty-total-cell {
+                font-size: 17px !important;
+                padding: 5px 4px;
+                height: 9mm;
+            }
+
+            .return-policy {
+                margin-top: 6px;
+                font-size: 14px;
+            }
+
+            .receipt-divider {
+                position: absolute;
+                left: 3mm;
+                right: 3mm;
+                bottom: 38mm;
+                margin: 0;
+            }
+
+            .receipt {
+                position: absolute;
+                left: 3mm;
+                right: 3mm;
+                bottom: 4mm;
+                padding-top: 6px;
+                min-height: 30mm;
+                margin: 0;
+            }
+
+            .receipt-grid {
+                gap: 4px;
+            }
+
+            .receipt-field {
+                font-size: 15px;
+                min-height: 20px;
+            }
+
+            .receipt-row-split {
+                grid-template-columns: 1fr 210px;
+                gap: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="app">
+
+    <div class="toolbar">
+        <h1>S.I. GARMENTS Billing App</h1>
+
+        <div class="actions">
+            <button class="btn-light" onclick="newBill()">New Bill</button>
+            <button class="btn-secondary" onclick="window.print()">Print</button>
+            <button class="btn-primary" onclick="saveBill()">Save Bill</button>
+        </div>
+    </div>
+
+    <div id="message" class="message"></div>
+
+    <div class="bill" id="printArea">
+
+        <div class="shop-header">
+            <div class="seller-contact">
+                <div>9903479108</div>
+                <div>8240544458</div>
+            </div>
+
+            <div class="brand-name">S.I. GARMENTS</div>
+            <div class="proprietor">Prop: Ajay Singh (Laltu)</div>
+            <div class="business-type">
+                Wholeseller of Fancy Kurty, Legince &amp; Readymade Garments
+            </div>
+            <div class="shop-address">
+                S/73/1B, Marry Road, Kolkata-700018
+            </div>
+        </div>
+
+        <div class="bill-info">
+            <div>
+                <label>Bill No.</label>
+                <input id="billNo" placeholder="Enter bill number">
+            </div>
+
+            <div>
+                <label>Date</label>
+                <input id="billDate" type="date" value="{{ today }}">
+            </div>
+        </div>
+
+        <div class="customer-box">
+            <div class="customer-grid">
+                <div>
+                    <label>Customer Name</label>
+                    <input id="customerName" placeholder="Customer name">
+                </div>
+
+                <div>
+                    <label>Customer Phone Number</label>
+                    <input id="customerPhone" type="tel" placeholder="Phone number">
+                </div>
+            </div>
+
+            <div class="customer-address-row">
+                <label>Customer Address (Optional)</label>
+                <input id="customerAddress" placeholder="Enter customer address">
+            </div>
+        </div>
+
+        <table class="bill-table">
+            <thead>
+                <tr>
+                    <th class="description">Description</th>
+                    <th class="serial">S.No</th>
+                    <th class="qty">Quantity</th>
+                    <th class="rate-column">Rate</th>
+                    <th class="amount">Amount</th>
+                    <th class="delete-cell screen-only"></th>
+                </tr>
+            </thead>
+
+            <tbody id="itemsBody"></tbody>
+
+            <tfoot>
+                <tr class="total-row">
+                    <td colspan="2" class="total-label">TOTAL QTY</td>
+                    <td id="totalQty" class="qty-total-cell">0</td>
+                    <td class="total-label">GRAND TOTAL</td>
+                    <td id="grandTotal" class="amount-cell">₹0.00</td>
+                    <td class="delete-cell screen-only"></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="screen-only" style="margin-top:12px;">
+            <button class="btn-secondary" onclick="addRow()">+ Add Item</button>
+        </div>
+
+        <div class="return-policy">
+            Goods once sold cannot be taken back
+        </div>
+
+        <div class="receipt-divider"></div>
+
+        <div class="receipt">
+            <div class="receipt-grid">
+                <div class="receipt-row-split">
+                    <div class="receipt-field">
+                        <span class="label">Bill no. :</span>
+                        <span class="value" id="receiptBillNo">-</span>
+                    </div>
+
+                    <div class="receipt-field">
+                        <span class="label">Date :</span>
+                        <span class="value" id="receiptDate">-</span>
+                    </div>
+                </div>
+
+                <div class="receipt-row-split">
+                    <div class="receipt-field">
+                        <span class="label">Name :</span>
+                        <span class="value" id="receiptName">-</span>
+                    </div>
+
+                    <div class="receipt-field">
+                        <span class="label">Total Qty :</span>
+                        <span class="value" id="receiptTotalQty">0</span>
+                    </div>
+                </div>
+
+                <div class="receipt-row-split">
+                    <div class="receipt-field">
+                        <span class="label">Address :</span>
+                        <span class="value" id="receiptAddress">-</span>
+                    </div>
+
+                    <div class="receipt-field">
+                        <span class="label">Grand Total :</span>
+                        <span class="value" id="receiptGrandTotal">₹0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const body = document.getElementById("itemsBody");
+
+    function money(value) {
+        return "₹" + Number(value || 0).toFixed(2);
+    }
+
+    function formatQuantity(value) {
+        const num = Number(value || 0);
+        return Number.isInteger(num) ? String(num) : num.toFixed(2);
+    }
+
+    function displayAmount(value, hasInput = true) {
+        if (!hasInput && Number(value || 0) === 0) {
+            return "";
+        }
+
+        return money(value);
+    }
+
+    function formatDate(value) {
+        if (!value) return "-";
+
+        const parts = value.split("-");
+        if (parts.length !== 3) return value;
+
+        return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
+
+    function syncReceipt() {
+        document.getElementById("receiptBillNo").textContent =
+            document.getElementById("billNo").value.trim() || "-";
+
+        document.getElementById("receiptName").textContent =
+            document.getElementById("customerName").value.trim() || "-";
+
+        document.getElementById("receiptAddress").textContent =
+            document.getElementById("customerAddress").value.trim() || "-";
+
+        document.getElementById("receiptDate").textContent =
+            formatDate(document.getElementById("billDate").value);
+
+        document.getElementById("receiptTotalQty").textContent =
+            document.getElementById("totalQty").textContent || "0";
+
+        document.getElementById("receiptGrandTotal").textContent =
+            document.getElementById("grandTotal").textContent || "₹0.00";
+    }
+
+    function addRow(description = "", quantity = "", rate = "") {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>
+                <input class="description-input"
+                       value="${escapeHtml(description)}">
+            </td>
+
+            <td class="serial"></td>
+
+            <td>
+                <input class="quantity number-input"
+                       type="number"
+                       min="0"
+                       step="any"
+                       value="${quantity}"
+                       placeholder="">
+            </td>
+
+            <td>
+                <input class="rate-input number-input"
+                       type="number"
+                       min="0"
+                       step="any"
+                       value="${rate}"
+                       placeholder=""
+                       inputmode="decimal">
+            </td>
+
+            <td class="amount-cell">₹0.00</td>
+
+            <td class="delete-cell screen-only">
+                <button class="delete-row"
+                        onclick="deleteRow(this)">×</button>
+            </td>
+        `;
+
+        body.appendChild(row);
+
+        row.querySelector(".quantity")
+            .addEventListener("input", calculate);
+
+        row.querySelector(".rate-input")
+            .addEventListener("input", calculate);
+
+        row.querySelector(".rate-input")
+            .addEventListener("blur", handleRateComplete);
+
+        row.querySelector(".description-input")
+            .addEventListener("input", calculate);
+
+        calculate();
+    }
+
+    function deleteRow(button) {
+        const row = button.closest("tr");
+        row.remove();
+
+        if (body.children.length === 0) {
+            addRow();
+        }
+
+        calculate();
+    }
+
+    function handleRateComplete(event) {
+        const rateInput = event.target;
+        const row = rateInput.closest("tr");
+
+        if (
+            row === body.lastElementChild &&
+            rateInput.value.trim() !== ""
+        ) {
+            addRow();
+        }
+    }
+
+    function calculate() {
+        let total = 0;
+        let totalQuantity = 0;
+
+        [...body.children].forEach((row, index) => {
+            row.querySelector(".serial").textContent = index + 1;
+
+            const qty =
+                parseFloat(row.querySelector(".quantity").value) || 0;
+
+            const rate =
+                parseFloat(row.querySelector(".rate-input").value) || 0;
+
+            const amount = qty * rate;
+            const hasInput = row.querySelector(".quantity").value.trim() !== ""
+                || row.querySelector(".rate-input").value.trim() !== "";
+
+            row.querySelector(".amount-cell").textContent =
+                displayAmount(amount, hasInput);
+
+            total += amount;
+            totalQuantity += qty;
+        });
+
+        const allEmpty = [...body.children].every(row =>
+            row.querySelector(".quantity").value.trim() === "" &&
+            row.querySelector(".rate-input").value.trim() === ""
+        );
+
+        document.getElementById("totalQty").textContent =
+            totalQuantity === 0 && allEmpty
+                ? "0"
+                : formatQuantity(totalQuantity);
+
+        document.getElementById("grandTotal").textContent =
+            total === 0 && allEmpty
+                ? ""
+                : money(total);
+
+        syncReceipt();
+    }
+
+    function getBillData() {
+        const items = [...body.children]
+            .map(row => ({
+                description:
+                    row.querySelector(".description-input")
+                        .value.trim(),
+
+                quantity:
+                    parseFloat(
+                        row.querySelector(".quantity").value
+                    ) || 0,
+
+                rate:
+                    parseFloat(
+                        row.querySelector(".rate-input").value
+                    ) || 0
+            }))
+            .filter(item =>
+                item.description ||
+                item.quantity !== 0 ||
+                item.rate !== 0
+            );
+
+        return {
+            bill_no:
+                document.getElementById("billNo").value.trim(),
+
+            date:
+                document.getElementById("billDate").value,
+
+            shop_name:
+                "S.I. GARMENTS",
+
+            shop_address:
+                "S/73/1B, Marry Road, Kolkata-700018",
+
+            customer_name:
+                document.getElementById("customerName")
+                    .value.trim(),
+
+            customer_phone:
+                document.getElementById("customerPhone")
+                    .value.trim(),
+
+            customer_address:
+                document.getElementById("customerAddress")
+                    .value.trim(),
+
+            items: items
+        };
+    }
+
+    async function saveBill() {
+        const data = getBillData();
+
+        if (!data.bill_no) {
+            showMessage("Please enter bill number.", false);
+            return;
+        }
+
+        if (!data.customer_name) {
+            showMessage("Please enter customer name.", false);
+            return;
+        }
+
+        if (data.items.length === 0) {
+            showMessage("Please add at least one item.", false);
+            return;
+        }
+
+        try {
+            const response = await fetch("/api/save", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (!response.ok || !result.ok) {
+                showMessage(
+                    result.message || "Could not save bill.",
+                    false
+                );
+                return;
+            }
+
+            document.getElementById("billNo").value =
+                result.bill.bill_no;
+
+            syncReceipt();
+
+            showMessage(result.message, true);
+
+        } catch (error) {
+            showMessage(
+                "Server error. Please try again.",
+                false
+            );
+        }
+    }
+
+    function newBill() {
+        document.getElementById("billNo").value = "";
+
+        document.getElementById("billDate").value =
+            new Date().toISOString().slice(0, 10);
+
+        document.getElementById("customerName").value = "";
+        document.getElementById("customerPhone").value = "";
+        document.getElementById("customerAddress").value = "";
+
+        body.innerHTML = "";
+        addRow();
+
+        syncReceipt();
+
+        showMessage("New bill ready.", true);
+    }
+
+    function showMessage(text, success) {
+        const box =
+            document.getElementById("message");
+
+        box.textContent = text;
+
+        box.className =
+            "message " +
+            (success ? "success" : "error");
+
+        box.style.display = "block";
+
+        setTimeout(() => {
+            box.style.display = "none";
+        }, 3000);
+    }
+
+    function escapeHtml(value) {
+        return String(value)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    }
+
+    document.getElementById("billNo")
+        .addEventListener("input", syncReceipt);
+
+    document.getElementById("customerName")
+        .addEventListener("input", syncReceipt);
+
+    document.getElementById("customerAddress")
+        .addEventListener("input", syncReceipt);
+
+    document.getElementById("billDate")
+        .addEventListener("input", syncReceipt);
+
+    addRow();
+    syncReceipt();
+</script>
+</body>
+</html>
