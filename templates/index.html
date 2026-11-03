@@ -56,11 +56,11 @@
         .btn-light { background: white; border: 1px solid #bbb; }
 
         /* =========================
-           CLEAN INVOICE LAYOUT
+           STANDARD SCREEN LAYOUT
            ========================= */
         .bill {
             background: white;
-            padding: 28px;
+            padding: 24px;
             box-shadow: 0 4px 20px rgba(0,0,0,.1);
             border: 1px solid #ccc;
             max-width: 210mm;
@@ -75,7 +75,7 @@
             text-align: center;
             border-bottom: 2px solid #111;
             padding: 4px 150px 12px 150px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .brand-name {
@@ -119,13 +119,13 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
         .customer-box {
             border: 2px solid #222;
             padding: 12px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .customer-grid {
@@ -154,19 +154,16 @@
             font-weight: 600;
         }
 
-        /* =========================
-           STANDARD CLEAN TABLE
-           ========================= */
         .bill-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
         .bill-table th,
         .bill-table td {
             border: 1px solid #222;
-            padding: 9px 8px;
+            padding: 8px;
         }
 
         .bill-table th {
@@ -254,7 +251,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .return-policy {
@@ -263,19 +260,17 @@
             font-weight: 800;
         }
 
-        /* =========================
-           RECEIPT / TEAR-OFF
-           ========================= */
+        /* Screen Receipt Style */
         .receipt-divider {
-            margin-top: 20px;
-            margin-bottom: 18px;
+            margin-top: 15px;
+            margin-bottom: 15px;
             border-top: 2px dotted #333;
         }
 
         .receipt-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 10px;
+            gap: 8px;
         }
 
         .receipt-row-split {
@@ -291,7 +286,7 @@
             justify-content: flex-start;
             gap: 8px;
             font-size: 16px;
-            min-height: 26px;
+            min-height: 24px;
         }
 
         .receipt-field .label {
@@ -339,15 +334,18 @@
             }
         }
 
+        /* =========================================
+           PRINT: EXACT A4 PAGE WITH FIXED 20% BOTTOM
+           ========================================= */
         @page {
             size: A4 portrait;
-            margin: 10mm;
+            margin: 5mm;
         }
 
         @media print {
             html, body {
                 width: 210mm;
-                height: 297mm;
+                height: 287mm;
                 padding: 0;
                 margin: 0;
                 background: white;
@@ -362,15 +360,95 @@
             .app {
                 max-width: none;
                 width: 100%;
+                height: 287mm;
             }
 
             .bill {
+                position: relative;
                 width: 100%;
+                height: 287mm;
+                min-height: 287mm;
+                max-height: 287mm;
                 box-shadow: none;
                 border: 0;
-                padding: 0;
+                padding: 2mm;
                 margin: 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                overflow: hidden;
             }
+
+            .bill-upper-section {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* Footer/Receipt section locked strictly to the bottom 20% */
+            .receipt-divider {
+                position: absolute;
+                bottom: 24mm;
+                left: 2mm;
+                right: 2mm;
+                margin: 0;
+                border-top: 2px dotted #111;
+            }
+
+            .receipt {
+                position: absolute;
+                bottom: 2mm;
+                left: 2mm;
+                right: 2mm;
+                height: 22mm;
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+            }
+
+            .shop-header {
+                padding: 2px 110px 5px 110px;
+                margin-bottom: 4px;
+            }
+
+            .brand-name { font-size: 30px; }
+            .proprietor { margin-top: 1px; font-size: 13px; }
+            .business-type { margin: 2px auto; font-size: 12px; line-height: 1.15; }
+            .shop-address { font-size: 12px; }
+            .seller-contact {
+                top: 0;
+                right: 0;
+                width: 110px;
+                font-size: 13px;
+                line-height: 1.15;
+            }
+
+            .bill-info { gap: 4px; margin-bottom: 4px; }
+            label { font-size: 11.5px; margin-bottom: 1px; }
+            input { padding: 2px 4px; font-size: 13px; font-weight: 700; }
+
+            .customer-box { padding: 4px; margin-bottom: 4px; }
+            .customer-grid { gap: 4px; }
+            .customer-address-row { margin-top: 3px; }
+
+            .bill-table { margin-bottom: 4px; }
+            .bill-table th { font-size: 13px; padding: 3px; }
+            .bill-table td { padding: 2px 3px; }
+            .bill-table .serial { font-size: 13px; }
+            .bill-table input { padding: 2px 3px; font-size: 13px; height: 18px; }
+            .bill-table td.amount-cell { font-size: 14px; }
+
+            .total-row td,
+            .qty-total-cell {
+                font-size: 15px !important;
+                padding: 4px 3px;
+            }
+
+            .return-policy { font-size: 12px; }
+
+            .receipt-grid { gap: 2px; }
+            .receipt-field { font-size: 13.5px; min-height: 18px; }
         }
     </style>
 </head>
@@ -392,85 +470,89 @@
 
     <div class="bill" id="printArea">
 
-        <div class="shop-header">
-            <div class="seller-contact">
-                <div>9903479108</div>
-                <div>8240544458</div>
-            </div>
-
-            <div class="brand-name">S.I. GARMENTS</div>
-            <div class="proprietor">Prop: Ajay Singh (Laltu)</div>
-            <div class="business-type">
-                Wholeseller of Fancy Kurty, Legince &amp; Readymade Garments
-            </div>
-            <div class="shop-address">
-                S/73/1B, Marry Road, Kolkata-700018
-            </div>
-        </div>
-
-        <div class="bill-info">
-            <div>
-                <label>Bill No.</label>
-                <input id="billNo" placeholder="Enter bill number">
-            </div>
-
-            <div>
-                <label>Date</label>
-                <input id="billDate" type="date" value="{{ today }}">
-            </div>
-        </div>
-
-        <div class="customer-box">
-            <div class="customer-grid">
-                <div>
-                    <label>Customer Name</label>
-                    <input id="customerName" placeholder="Customer name">
+        <!-- Upper Section (Items & Details) -->
+        <div class="bill-upper-section">
+            <div class="shop-header">
+                <div class="seller-contact">
+                    <div>9903479108</div>
+                    <div>8240544458</div>
                 </div>
 
-                <div>
-                    <label>Customer Phone Number</label>
-                    <input id="customerPhone" type="tel" placeholder="Phone number">
+                <div class="brand-name">S.I. GARMENTS</div>
+                <div class="proprietor">Prop: Ajay Singh (Laltu)</div>
+                <div class="business-type">
+                    Wholeseller of Fancy Kurty, Legince &amp; Readymade Garments
+                </div>
+                <div class="shop-address">
+                    S/73/1B, Marry Road, Kolkata-700018
                 </div>
             </div>
 
-            <div class="customer-address-row">
-                <label>Customer Address (Optional)</label>
-                <input id="customerAddress" placeholder="Enter customer address">
+            <div class="bill-info">
+                <div>
+                    <label>Bill No.</label>
+                    <input id="billNo" placeholder="Enter bill number">
+                </div>
+
+                <div>
+                    <label>Date</label>
+                    <input id="billDate" type="date" value="{{ today }}">
+                </div>
+            </div>
+
+            <div class="customer-box">
+                <div class="customer-grid">
+                    <div>
+                        <label>Customer Name</label>
+                        <input id="customerName" placeholder="Customer name">
+                    </div>
+
+                    <div>
+                        <label>Customer Phone Number</label>
+                        <input id="customerPhone" type="tel" placeholder="Phone number">
+                    </div>
+                </div>
+
+                <div class="customer-address-row">
+                    <label>Customer Address (Optional)</label>
+                    <input id="customerAddress" placeholder="Enter customer address">
+                </div>
+            </div>
+
+            <table class="bill-table">
+                <thead>
+                    <tr>
+                        <th class="description">Description</th>
+                        <th class="serial">S.No</th>
+                        <th class="qty">Quantity</th>
+                        <th class="rate-column">Rate</th>
+                        <th class="amount">Amount</th>
+                    </tr>
+                </thead>
+
+                <tbody id="itemsBody"></tbody>
+
+                <tfoot>
+                    <tr class="total-row">
+                        <td colspan="2" class="total-label">TOTAL QTY</td>
+                        <td id="totalQty" class="qty-total-cell">0</td>
+                        <td class="total-label">GRAND TOTAL</td>
+                        <td id="grandTotal" class="amount-cell">₹0.00</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div class="bottom-bar">
+                <div class="return-policy">
+                    Goods once sold cannot be taken back
+                </div>
+                <div class="screen-only">
+                    <button class="btn-secondary" onclick="addRow()">+ Add Item</button>
+                </div>
             </div>
         </div>
 
-        <table class="bill-table">
-            <thead>
-                <tr>
-                    <th class="description">Description</th>
-                    <th class="serial">S.No</th>
-                    <th class="qty">Quantity</th>
-                    <th class="rate-column">Rate</th>
-                    <th class="amount">Amount</th>
-                </tr>
-            </thead>
-
-            <tbody id="itemsBody"></tbody>
-
-            <tfoot>
-                <tr class="total-row">
-                    <td colspan="2" class="total-label">TOTAL QTY</td>
-                    <td id="totalQty" class="qty-total-cell">0</td>
-                    <td class="total-label">GRAND TOTAL</td>
-                    <td id="grandTotal" class="amount-cell">₹0.00</td>
-                </tr>
-            </tfoot>
-        </table>
-
-        <div class="bottom-bar">
-            <div class="return-policy">
-                Goods once sold cannot be taken back
-            </div>
-            <div class="screen-only">
-                <button class="btn-secondary" onclick="addRow()">+ Add Item</button>
-            </div>
-        </div>
-
+        <!-- Lower Section: Fixed 20% Tear-off Receipt at Bottom -->
         <div class="receipt-divider"></div>
 
         <div class="receipt">
@@ -747,7 +829,7 @@
         }
 
         if (data.items.length === 0) {
-            showMessage("Please update at least one item.", false);
+            showMessage("Please add at least one item.", false);
             return;
         }
 
@@ -781,6 +863,10 @@
                 false
             );
         }
+    }
+
+    function newButton() {
+        // handled in newBill
     }
 
     function newBill() {
